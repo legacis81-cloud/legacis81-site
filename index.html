@@ -5,7 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="img/e_l81.webp">
 <meta property="og:title" content="Maison LEGACIS81">
-<meta property="og:image" content="https://legacis81.com/img/e_l81.webp">
+<meta property="og:image" content="https://legacis81.com/img/le-sceau-des-heritages.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Le Sceau des Héritages, bannière de la Maison LEGACIS81">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://legacis81.com/img/le-sceau-des-heritages.png">
+<meta name="twitter:image:alt" content="Le Sceau des Héritages, bannière de la Maison LEGACIS81">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -84,6 +91,9 @@ section{padding-block:clamp(56px,8vw,104px)}
 .view.on{display:block}
 
 /* accueil */
+.hero .brand-banner{display:block;position:relative;max-width:940px;aspect-ratio:4;margin:0 auto clamp(22px,4vw,48px);background:#050302;overflow:hidden;border:1px solid #322713}
+.hero .brand-banner img{position:absolute;display:block;width:100%;height:auto;top:50%;left:0;transform:translateY(-50%)}
+.hero:has(.brand-banner){padding-top:clamp(16px,2.5vw,32px)}
 .hero{background:var(--band);color:var(--band-fg);padding-block:clamp(40px,6vw,80px)}
 .hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
 .hero h1{color:#fff}
@@ -282,6 +292,9 @@ footer .legal{border-top:1px solid #2b2620;margin-top:36px;padding-top:18px;disp
 <!-- ============ ACCUEIL ============ -->
 <div class="view" id="v-accueil">
   <div class="hero">
+    <figure class="brand-banner wrap">
+      <img src="img/le-sceau-des-heritages.png" width="1200" height="630" alt="Le Sceau des Héritages — LEGACIS81">
+    </figure>
     <div class="wrap">
       <div>
         <p class="eyebrow" style="color:var(--or)">Maison LEGACIS81 · Guadeloupe · Greater Manchester</p>
