@@ -1,0 +1,45 @@
+name: Social images (Etsy -> 1080px)
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Folder name (slug)"
+        required: true
+      urls:
+        description: "Space-separated Etsy image URLs (i.etsystatic.com)"
+        required: true
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pillow requests
+      - name: Download and resize
+        env:
+          NAME: ${{ inputs.name }}
+          URLS: ${{ inputs.urls }}
+        run: |
+          python - <<'PY'
+          import os, re, io, requests
+          from PIL import Image
+          name = re.sub(r'[^a-z0-9-]', '', os.environ['NAME'].lower())
+          out = f'img/social/{name}'
+          os.makedirs(out, exist_ok=True)
+          for i, u in enumerate(os.environ['URLS'].split(), 1):
+              assert u.startswith('https://i.etsystatic.com/'), u
+              im = Image.open(io.BytesIO(requests.get(u, timeout=30).content)).convert('RGB')
+              im.thumbnail((1080, 1350), Image.LANCZOS)
+              im.save(f'{out}/{i}.jpg', quality=90)
+              print(out, i, im.size)
+          PY
+      - run: |
+          git config user.name "legacis81-bot"
+          git config user.email "legacis81@gmail.com"
+          git add img/social
+          git commit -m "Social images: ${{ inputs.name }}" || echo "nothing to commit"
+          git push
