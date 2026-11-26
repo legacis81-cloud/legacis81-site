@@ -38,7 +38,7 @@ jobs:
                   dark = sum(1 for h_, s_, v_ in px if v_ < 90) / 10000
                   if white > 0.8:
                       print('metrics', i, name, round(white, 2), round(pure, 2), round(dark, 3))
-                  if pure > 0.8 and dark < 0.08:
+                  if white >= 0.91 and pure >= 0.79 and dark < 0.02:
                       print('chart', i, name); continue
                   n += 1
                   im.thumbnail((800, 800), Image.LANCZOS)
