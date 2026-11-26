@@ -32,9 +32,14 @@ jobs:
                   except Exception as e:
                       print('skip', i, u, e); continue
                   sm = im.resize((100, 100)).convert('HSV')
-                  white = sum(1 for h_, s_, v_ in sm.getdata() if s_ < 20 and v_ > 215) / 10000
-                  if white > 0.86:
-                      print('chart?', i, name, round(white, 2)); continue
+                  px = list(sm.getdata())
+                  white = sum(1 for h_, s_, v_ in px if s_ < 20 and v_ > 215) / 10000
+                  pure = sum(1 for h_, s_, v_ in px if s_ < 8 and v_ >= 250) / 10000
+                  dark = sum(1 for h_, s_, v_ in px if v_ < 90) / 10000
+                  if white > 0.8:
+                      print('metrics', i, name, round(white, 2), round(pure, 2), round(dark, 3))
+                  if pure > 0.8 and dark < 0.08:
+                      print('chart', i, name); continue
                   n += 1
                   im.thumbnail((800, 800), Image.LANCZOS)
                   im.save(f'img/g/{i:02d}_{n}.webp', 'WEBP', quality=82)
