@@ -625,7 +625,7 @@ try{lang=localStorage.getItem("l81-lang")||"fr"}catch(e){}
 const T=o=>o[lang];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const price=p=>(lang==="fr"?"dès £":"from £")+p.p.toFixed(2);
-const GN=[4,3,4,4,4,4,3,4,4,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4];
+const GN=[4,2,3,4,4,4,2,3,4,2,4,4,4,4,3,3,3,3,3,3,4,3,4,4,3,3,4,4,4,3,3,3,3,4,3,4,4,4,4,4,4,3,4,3,4,4,4,4,4,4,4,4,4,3];
 function gallery(p){
   const n=GN[p.i]||0, ii=String(p.i).padStart(2,"0");
   if(n<2) return `<img src="img/p${ii}.webp" alt="${esc(p.n)}, ${esc(p.e)}" loading="lazy">`;
