@@ -476,7 +476,7 @@ footer .legal{border-top:1px solid #2b2620;margin-top:36px;padding-top:18px;disp
     <p class="eyebrow">Collections</p>
     <h1 class="fr">Trouve la pièce qui porte ton histoire.</h1><h1 class="en">Find the piece that carries your story.</h1>
     <p class="lead fr">67 pièces, six univers. L'achat se fait sur Etsy, dans un nouvel onglet.</p>
-    <p class="lead en">54 pieces, six universes. Checkout happens on Etsy, in a new tab.</p>
+    <p class="lead en">67 pieces, six universes. Checkout happens on Etsy, in a new tab.</p>
   </div></div>
   <section><div class="wrap">
     <div class="chips" id="chips" role="group" aria-label="Filtrer"></div>
@@ -625,7 +625,7 @@ try{lang=localStorage.getItem("l81-lang")||"fr"}catch(e){}
 const T=o=>o[lang];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const price=p=>(lang==="fr"?"dès £":"from £")+p.p.toFixed(2);
-const GN=[4,2,3,4,4,4,2,3,4,2,4,4,4,4,3,3,3,3,3,3,4,3,4,4,3,3,4,4,4,3,3,3,3,4,3,4,4,4,4,4,4,3,4,3,4,4,4,4,4,4,4,4,4,3,4,4,4,4,4,4,4,4,4,4,4,4,4];
+const GN=[4,2,3,4,4,4,2,3,4,2,4,4,4,4,3,3,3,3,3,3,4,3,4,4,3,3,4,4,4,3,3,3,3,4,3,4,4,4,4,4,4,3,4,3,4,4,4,4,4,4,4,4,4,3,4,4,4,4,4,4,4,4,4,3,3,3,3];
 function gallery(p){
   const n=GN[p.i]||0, ii=String(p.i).padStart(2,"0");
   if(n<2) return `<img src="img/p${ii}.webp" alt="${esc(p.n)}, ${esc(p.e)}" loading="lazy">`;
