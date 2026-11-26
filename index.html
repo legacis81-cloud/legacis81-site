@@ -190,6 +190,18 @@ html.en .emblem q{quotes:"\201C" "\201D"}
 .prod .ph{aspect-ratio:1/1;background:#fff;border:1px solid var(--line);overflow:hidden}
 .prod .ph img{width:100%;height:100%;object-fit:contain;transition:transform .5s}
 .prod:hover .ph img{transform:scale(1.03)}
+.prod .ph{position:relative}
+.prod .gal{display:flex;width:100%;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.prod .gal::-webkit-scrollbar{display:none}
+.prod .gal img{flex:0 0 100%;scroll-snap-align:center}
+.prod:hover .gal img{transform:none}
+.prod .gnav{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.9);color:#111;font-size:18px;line-height:1;cursor:pointer;opacity:0;transition:opacity .2s}
+.prod .ph:hover .gnav,.prod .gnav:focus-visible{opacity:1}
+.prod .gnav.prev{left:6px}.prod .gnav.next{right:6px}
+.prod .gdots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.prod .gdots i{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.25)}
+.prod .gdots i.on{background:var(--or)}
+@media (hover:none){.prod .gnav{display:none}}
 .prod .tx{padding-top:10px;display:grid;gap:2px;flex:1}
 .prod .nm{font-weight:600;font-size:.94rem;line-height:1.3}
 .prod .ed{font-size:.8rem;color:var(--muted);line-height:1.35}
@@ -613,8 +625,17 @@ try{lang=localStorage.getItem("l81-lang")||"fr"}catch(e){}
 const T=o=>o[lang];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const price=p=>(lang==="fr"?"dès £":"from £")+p.p.toFixed(2);
+const GN=[4,3,4,4,4,4,3,4,4,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4];
+function gallery(p){
+  const n=GN[p.i]||0, ii=String(p.i).padStart(2,"0");
+  if(n<2) return `<img src="img/p${ii}.webp" alt="${esc(p.n)}, ${esc(p.e)}" loading="lazy">`;
+  const lab=lang==="fr"?"Vue":"View";
+  return `<div class="gal">${Array.from({length:n},(_,k)=>`<img src="img/g/${ii}_${k+1}.webp" alt="${esc(p.n)}, ${esc(p.e)} — ${lab} ${k+1}/${n}" loading="lazy">`).join("")}</div>
+  <button class="gnav prev" type="button" aria-label="${lang==="fr"?"Vue précédente":"Previous view"}">‹</button><button class="gnav next" type="button" aria-label="${lang==="fr"?"Vue suivante":"Next view"}">›</button>
+  <div class="gdots">${Array.from({length:n},(_,k)=>`<i${k?"":" class=\"on\""}></i>`).join("")}</div>`;
+}
 function card(p,img){
-  return `<article class="prod"><div class="ph"><img src="${img||`img/p${String(p.i).padStart(2,"0")}.webp`}" alt="${esc(p.n)}, ${esc(p.e)}" loading="lazy"></div>
+  return `<article class="prod"><div class="ph">${img?`<img src="${img}" alt="${esc(p.n)}, ${esc(p.e)}" loading="lazy">`:gallery(p)}</div>
   <div class="tx"><span class="nm">${esc(p.n)}</span><span class="ed">${esc(p.e)}</span><span class="pr">${price(p)}</span>${p.f?`<span class="free">${lang==="fr"?"Livraison UK offerte":"Free UK delivery"}</span>`:""}</div>
   <a class="buy" href="https://www.etsy.com/listing/${p.id}" target="_blank" rel="noopener">${lang==="fr"?"Acheter sur Etsy":"Shop on Etsy"} ↗</a></article>`;
 }
@@ -650,6 +671,8 @@ function show(){
 function goFloor(){const el=document.getElementById("floor-"+pendingFloor);pendingFloor=null;if(el){const y=el.getBoundingClientRect().top+scrollY-90;window.scrollTo({top:y,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})}}
 let pendingFloor=null;
 document.addEventListener("click",e=>{
+  const nav=e.target.closest(".gnav");
+  if(nav){const g=nav.parentElement.querySelector(".gal");g.scrollBy({left:(nav.classList.contains("next")?1:-1)*g.clientWidth,behavior:"smooth"});return;}
   const fl=e.target.closest("[data-floor]");if(fl){pendingFloor=fl.dataset.floor;if(location.hash==="#emblemes"){e.preventDefault();goFloor()}}
   const f=e.target.closest("[data-filter]");if(f){filter=f.dataset.filter;render();}
   const c=e.target.closest("[data-chip]");if(c){filter=c.dataset.chip;render();}
@@ -663,6 +686,7 @@ document.getElementById("copy-mail").addEventListener("click",()=>{
   try{navigator.clipboard.writeText("legacis81@gmail.com").then(done,()=>{getSelection().selectAllChildren(document.getElementById("mail"));out.textContent=lang==="fr"?"Adresse sélectionnée, copiez-la":"Address selected, copy it"})}catch(err){getSelection().selectAllChildren(document.getElementById("mail"))}
 });
 window.addEventListener("hashchange",show);
+document.addEventListener("scroll",e=>{const g=e.target;if(!(g.classList&&g.classList.contains("gal")))return;const k=Math.round(g.scrollLeft/g.clientWidth);g.parentElement.querySelectorAll(".gdots i").forEach((d,j)=>d.classList.toggle("on",j===k));},true);
 render();show();
 </script>
 
